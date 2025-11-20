@@ -163,21 +163,21 @@ general_h = [["?" for _ in range(len(specific_h))] for _ in range(len(specific_h
 print("General: ", general_h)
 
 for i, h in enumerate(concept): 
-    if target[i]=="yes": 
+    
+    if target[i]=="yes":
         for x in range(len(specific_h)): 
             if h[x]!=specific_h[x]: 
-                specific_h[x] = '?'
-                general_h[x] = '?'
+                specific_h[x] ='?'
+                general_h[x][x] = '?'
     else: 
-        for x in range(len(specific_h)):
+        for x in range(len(specific_h)): 
             if h[x] != specific_h[x]: 
                 general_h[x][x] = specific_h[x]
             else: 
                 general_h[x][x] = "?"
-    
-    print(f"\nStep: {i+1}")
+    print("Step",i+1)
     print("Specific_h: ", specific_h)
-    print("General_h", general_h)
+    print("General_h: ", general_h)
     
 indices = [i for i, val in enumerate(general_h) if val== ['?' for _ in range(len(specific_h))]]
 for i in sorted(indices, reverse=True): 
