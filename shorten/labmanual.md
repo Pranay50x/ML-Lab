@@ -101,28 +101,25 @@ from sklearn.datasets import load_iris
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
-# 1. Load & Scale Data
 iris = load_iris()
-X_scaled = StandardScaler().fit_transform(iris.data)
-
-print("Original dataset shape: ", iris.data.shape)
-print("Features: ", iris.feature_names)
+df = pd.DataFrame(iris.data, columns=iris.feature_names)
+x_scaled = StandardScaler().fit_transform(iris.data)
+print("Shape: ", iris.data.shape)
+print("Features: ",iris.feature_names)
 print("Target classes: ", iris.target_names)
 
-# 2. Apply PCA
 pca = PCA(n_components=2)
-X_pca = pca.fit_transform(X_scaled)
+x_pca = pca.fit_transform(x_scaled)
 
 print("\nPCA Results: ")
 print("Explained variance ratio: ", pca.explained_variance_ratio_)
 print("Total variance explained: {:.2f}%".format(sum(pca.explained_variance_ratio_) * 100))
 
-# 3. Visualize
 plt.figure(figsize=(10, 8))
 colors = ['navy', 'red', 'darkorange']
 
 for color, i, target_name in zip(colors, [0, 1, 2], iris.target_names):
-    plt.scatter(X_pca[iris.target == i, 0], X_pca[iris.target == i, 1], 
+    plt.scatter(x_pca[iris.target == i, 0], x_pca[iris.target == i, 1], 
                 color=color, alpha=0.8, lw=2, label=target_name)
 
 plt.legend(loc='best', shadow=False)
@@ -130,8 +127,6 @@ plt.title('PCA of Iris Dataset')
 plt.xlabel(f'PC1 ({pca.explained_variance_ratio_[0]*100:.2f}%)')
 plt.ylabel(f'PC2 ({pca.explained_variance_ratio_[1]*100:.2f}%)')
 plt.grid(alpha=0.3)
-
-# Add influencing features text
 pc1_top = iris.feature_names[np.argmax(abs(pca.components_[0]))]
 pc2_top = iris.feature_names[np.argmax(abs(pca.components_[1]))]
 plt.figtext(0.02, 0.02, f"PC1 influenced by: {pc1_top}\nPC2 influenced by: {pc2_top}", 
@@ -139,11 +134,15 @@ plt.figtext(0.02, 0.02, f"PC1 influenced by: {pc1_top}\nPC2 influenced by: {pc2_
 
 plt.show()
 
-# 4. Component Loadings
-print('\nPCA Details (Components loadings): ')
-for i, comp in enumerate(pca.components_):
-    loadings = ", ".join([f"{feat}: {weight:.3f}" for feat, weight in zip(iris.feature_names, comp)])
-    print(f"PC{i+1}: {loadings}")
+print("PCA Details: ")
+print("PCA1 Loadings: ")
+for i,col in enumerate(df.columns): 
+    print(f"{col}: {pca.components_[0][i]:.3f}")
+
+print("PCA2 Loadings: ")
+for i,col in enumerate(df.columns): 
+    print(f"{col} : {pca.components_[1][i]:.3f}")
+
 ```
 
 ## Prog4 Candidate Elimination
