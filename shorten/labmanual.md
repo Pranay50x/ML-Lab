@@ -173,7 +173,7 @@ for i, h in enumerate(concept):
         for x in range(len(specific_h)): 
             if h[x] != specific_h[x]: 
                 general_h[x][x] = specific_h[x]
-            else: 
+            else:  
                 general_h[x][x] = "?"
     print("Step",i+1)
     print("Specific_h: ", specific_h)
